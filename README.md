@@ -25,3 +25,5 @@ Key Features:
 The output visualization based on example weather data for "New York":
 Bar Chart: Displays the values of temperature, humidity, and wind speed.
 Pie Chart: Illustrates the proportional contribution of these parameters
+Output link: ![Screenshot 2024-12-31 104248](https://github.com/user-attachments/assets/be7bd748-21ef-4be2-81b8-aed22b16c9f5)
+
