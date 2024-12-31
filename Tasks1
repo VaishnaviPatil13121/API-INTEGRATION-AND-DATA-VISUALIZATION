@@ -1,0 +1,66 @@
+import requests
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Function to fetch weather data from OpenWeatherMap API
+def fetch_weather_data(city, api_key):
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        return None
+
+# Function to visualize the weather data
+def visualize_weather_data(data):
+    if not data:
+        print("No data to visualize.")
+        return
+
+    # Extracting relevant data
+    labels = ['Temperature (°C)', 'Humidity (%)', 'Wind Speed (m/s)']
+    values = [
+        data['main']['temp'],
+        data['main']['humidity'],
+        data['wind']['speed']
+    ]
+
+    # Plotting the data
+    sns.set_theme(style="whitegrid")
+    plt.figure(figsize=(12, 6))
+
+    # Subplot 1: Bar plot
+    plt.subplot(1, 2, 1)
+    sns.barplot(x=labels, y=values, palette="viridis")
+    plt.title(f"Weather Data for {data['name']}", fontsize=14)
+    plt.ylabel("Values", fontsize=12)
+    plt.xlabel("Parameters", fontsize=12)
+
+    # Subplot 2: Pie chart
+    plt.subplot(1, 2, 2)
+    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=sns.color_palette("viridis", len(labels)))
+    plt.title("Parameter Contribution", fontsize=14)
+
+    # Adjust layout
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    # Input parameters
+    city = "New York"  # Example city for demonstration
+    api_key = "OpenWeatherMap API key"  # Replace with your OpenWeatherMap API key
+
+    # Fetch weather data
+    weather_data = fetch_weather_data(city, api_key)
+
+    # Simulating output with sample data if API key is not provided
+    if not weather_data:
+        weather_data = {
+            "name": "New York",
+            "main": {"temp": 25.3, "humidity": 70},
+            "wind": {"speed": 5.2},
+        }
+
+    # Visualize the data
+    visualize_weather_data(weather_data)
